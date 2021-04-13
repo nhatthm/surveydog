@@ -85,9 +85,11 @@ func (s *Survey) Expect(c surveymock.Console) error {
 }
 
 // Start starts a new survey.
-func (s *Survey) Start() *Survey {
+func (s *Survey) Start(scenario string) *Survey {
 	s.mu.Lock()
 	defer s.mu.Unlock()
+
+	s.test.Logf("Scenario: %s\n", scenario)
 
 	s.output = new(surveymock.Buffer)
 
@@ -118,7 +120,8 @@ func (s *Survey) Close() {
 	s.test.Logf("Raw output: %q\n", s.output.String())
 
 	// Dump the terminal's screen.
-	s.test.Logf("%s\n", expect.StripTrailingEmptyLines(s.state.String()))
+	s.test.Logf("State: \n%s\n", expect.StripTrailingEmptyLines(s.state.String()))
+	s.test.Log()
 
 	s.console = nil
 	s.state = nil

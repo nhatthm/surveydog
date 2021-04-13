@@ -49,7 +49,7 @@ func (m *Manager) beforeScenario(t surveymock.TestingT, sc *godog.Scenario) {
 	defer m.mu.Unlock()
 
 	m.current = sc.Id
-	m.surveys[m.current] = NewSurvey(t, m.options...).Start()
+	m.surveys[m.current] = NewSurvey(t, m.options...).Start(sc.Name)
 }
 
 func (m *Manager) afterScenario(sc *godog.Scenario, _ error) {

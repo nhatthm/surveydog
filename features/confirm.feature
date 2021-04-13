@@ -25,4 +25,4 @@ Feature: Confirm
     Scenario: Interrupted
         Given the app gets a confirm prompt "Confirm? (y/N)", it will interrupt
 
-        Then ask for confirm "Confirm? (y/N)", get interrupted
+        Then ask for confirm "Confirm?", get interrupted

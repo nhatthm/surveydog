@@ -17,7 +17,7 @@ func TestSurvey_ExpectationsWereMet(t *testing.T) {
 
 	s := surveydog.NewSurvey(t, func(s *surveymock.Survey) {
 		s.ExpectPassword("Enter password:").Answer("password")
-	}).Start()
+	}).Start("test")
 
 	doneCh := make(chan struct{}, 1)
 
@@ -47,7 +47,7 @@ func TestSurvey_ExpectationsWereNotMet(t *testing.T) {
 	testingT := T()
 	s := surveydog.NewSurvey(testingT, func(s *surveymock.Survey) {
 		s.ExpectPassword("Enter password:")
-	}).Start()
+	}).Start("test")
 
 	time.Sleep(50 * time.Millisecond)
 
