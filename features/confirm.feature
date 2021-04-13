@@ -26,3 +26,9 @@ Feature: Confirm
         Given I see a confirm prompt "Confirm? (y/N)", I interrupt
 
         Then ask for confirm "Confirm?", get interrupted
+
+    Scenario: Invalid answer
+        Given I see a confirm prompt "Confirm? (y/N)", I answer "nahhh"
+        And then I see another confirm prompt "Confirm? (y/N)", I answer no
+
+        Then ask for confirm "Confirm?", receive no

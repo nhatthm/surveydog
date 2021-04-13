@@ -1,9 +1,15 @@
-package surveydog_test
+package surveydog
 
 import (
 	"fmt"
+	"testing"
+	"time"
 
+	"github.com/AlecAivazis/survey/v2"
+	"github.com/cucumber/godog"
 	"github.com/nhatthm/surveymock"
+	"github.com/nhatthm/surveymock/options"
+	"github.com/stretchr/testify/assert"
 )
 
 type TestingT struct {
@@ -47,4 +53,59 @@ func T() *TestingT {
 		log:   new(surveymock.Buffer),
 		clean: func() {},
 	}
+}
+
+func TestManager_ExpectationsWereMet(t *testing.T) {
+	t.Parallel()
+
+	testingT := T()
+	s := New()
+	sc := &godog.Scenario{Id: "42", Name: "ExpectationsWereMet"}
+
+	s.beforeScenario(testingT, sc)
+
+	assert.Nil(t, s.expectPasswordAnswer("Enter password:", "password"))
+
+	doneCh := make(chan struct{}, 1)
+
+	go func() {
+		defer close(doneCh)
+
+		var answer string
+		err := survey.AskOne(&survey.Password{Message: "Enter password:"}, &answer, options.WithStdio(s.Stdio()))
+
+		assert.Equal(t, "password", answer)
+		assert.NoError(t, err)
+	}()
+
+	select {
+	case <-time.After(100 * time.Millisecond):
+		t.Error("ask timeout")
+
+	case <-doneCh:
+	}
+
+	s.afterScenario(testingT, sc)
+
+	assert.Empty(t, testingT.ErrorString())
+}
+
+func TestManager_ExpectationsWereNotMet(t *testing.T) {
+	t.Parallel()
+
+	testingT := T()
+	s := New()
+	sc := &godog.Scenario{Id: "42", Name: "ExpectationsWereNotMet"}
+
+	s.beforeScenario(testingT, sc)
+
+	assert.Nil(t, s.expectPasswordAnswer("Enter password:", "password"))
+
+	<-time.After(50 * time.Millisecond)
+
+	s.afterScenario(testingT, sc)
+
+	expectedError := "in scenario \"ExpectationsWereNotMet\", there are remaining expectations that were not met:\n\t            \t\n\t            \tType   : Password\n\t            \tMessage: \"Enter password:\"\n\t            \tAnswer : \"password\"\n"
+
+	assert.Contains(t, testingT.ErrorString(), expectedError)
 }
