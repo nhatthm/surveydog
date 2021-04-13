@@ -27,16 +27,16 @@ func (m *Manager) RegisterContext(t surveymock.TestingT, ctx *godog.ScenarioCont
 	ctx.AfterScenario(m.afterScenario)
 
 	// Confirm prompt
-	ctx.Step(`gets? a(?:nother)? confirm prompt "([^"]*)".* answers? yes`, m.expectConfirmYes)
-	ctx.Step(`gets? a(?:nother)? confirm prompt "([^"]*)".* answers? no`, m.expectConfirmNo)
-	ctx.Step(`gets? a(?:nother)? confirm prompt "([^"]*)".* answers? "([^"]*)"`, m.expectConfirmAnswer)
-	ctx.Step(`gets? a(?:nother)? confirm prompt "([^"]*)".* interrupts?`, m.expectConfirmInterrupt)
-	ctx.Step(`gets? a(?:nother)? confirm prompt "([^"]*)".* asks? for help and sees? "([^"]*)"`, m.expectConfirmHelp)
+	ctx.Step(`(?:(?:get)|(?:see))s? a(?:nother)? confirm prompt "([^"]*)".* answers? yes`, m.expectConfirmYes)
+	ctx.Step(`(?:(?:get)|(?:see))s? a(?:nother)? confirm prompt "([^"]*)".* answers? no`, m.expectConfirmNo)
+	ctx.Step(`(?:(?:get)|(?:see))s? a(?:nother)? confirm prompt "([^"]*)".* answers? "([^"]*)"`, m.expectConfirmAnswer)
+	ctx.Step(`(?:(?:get)|(?:see))s? a(?:nother)? confirm prompt "([^"]*)".* interrupts?`, m.expectConfirmInterrupt)
+	ctx.Step(`(?:(?:get)|(?:see))s? a(?:nother)? confirm prompt "([^"]*)".* asks? for help and sees? "([^"]*)"`, m.expectConfirmHelp)
 
 	// Password prompt.
-	ctx.Step(`gets? a(?:nother)? password prompt "([^"]*)".* answers? "([^"]*)"`, m.expectPasswordAnswer)
-	ctx.Step(`gets? a(?:nother)? password prompt "([^"]*)".* interrupts?`, m.expectPasswordInterrupt)
-	ctx.Step(`gets? a(?:nother)? password prompt "([^"]*)".* asks? for help and sees? "([^"]*)"`, m.expectPasswordHelp)
+	ctx.Step(`(?:(?:get)|(?:see))s? a(?:nother)? password prompt "([^"]*)".* answers? "([^"]*)"`, m.expectPasswordAnswer)
+	ctx.Step(`(?:(?:get)|(?:see))s? a(?:nother)? password prompt "([^"]*)".* interrupts?`, m.expectPasswordInterrupt)
+	ctx.Step(`(?:(?:get)|(?:see))s? a(?:nother)? password prompt "([^"]*)".* asks? for help and sees? "([^"]*)"`, m.expectPasswordHelp)
 }
 
 // Stdio returns terminal.Stdio of the current survey.
