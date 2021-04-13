@@ -183,6 +183,8 @@ github.com/nhatthm/surveymock v0.3.11 h1:AMakfwvUamA9/0/neM468OJ6uhB2oNDXrHJvjO6
 github.com/nhatthm/surveymock v0.3.11/go.mod h1:F07H+/DzCasxuHgXSQf3JgaKkuC0PA3+hT1u8qFFjWw=
 github.com/nhatthm/surveymock v0.3.12 h1:zm8QYCpcVgm5Kqks9wASb5EQFc1WRJdjSmk/Il8Mkxg=
 github.com/nhatthm/surveymock v0.3.12/go.mod h1:F07H+/DzCasxuHgXSQf3JgaKkuC0PA3+hT1u8qFFjWw=
+github.com/nhatthm/surveymock v0.3.13 h1:BzaBJvdnS40xSlHQ5A7OauGWKOlMnebFUXNQl4piOhM=
+github.com/nhatthm/surveymock v0.3.13/go.mod h1:F07H+/DzCasxuHgXSQf3JgaKkuC0PA3+hT1u8qFFjWw=
 github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e/go.mod h1:zD1mROLANZcx1PVRCS0qkT7pwLkGfwJo4zjcN/Tysno=
 github.com/oklog/ulid v1.3.1/go.mod h1:CirwcVhetQ6Lv90oh/F+FBtV6XMibvdAFo93nm5qn4U=
 github.com/pascaldekloe/goe v0.0.0-20180627143212-57f6aae5913c/go.mod h1:lzWF7FIEvWOWxwDKqyGYQf6ZUaNfKdP144TG7ZOy1lc=
