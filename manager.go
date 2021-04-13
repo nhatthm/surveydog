@@ -1,11 +1,13 @@
 package surveydog
 
 import (
+	"fmt"
 	"sync"
 
 	"github.com/AlecAivazis/survey/v2/terminal"
 	"github.com/cucumber/godog"
 	"github.com/nhatthm/surveymock"
+	"github.com/stretchr/testify/assert"
 )
 
 // Manager is a wrapper around *surveymock.Survey to make it run with cucumber/godog.
@@ -24,7 +26,10 @@ func (m *Manager) RegisterContext(t surveymock.TestingT, ctx *godog.ScenarioCont
 	ctx.BeforeScenario(func(sc *godog.Scenario) {
 		m.beforeScenario(t, sc)
 	})
-	ctx.AfterScenario(m.afterScenario)
+
+	ctx.AfterScenario(func(sc *godog.Scenario, _ error) {
+		m.afterScenario(t, sc)
+	})
 
 	// Confirm prompt
 	ctx.Step(`(?:(?:get)|(?:see))s? a(?:nother)? confirm prompt "([^"]*)".* answers? yes`, m.expectConfirmYes)
@@ -52,13 +57,15 @@ func (m *Manager) beforeScenario(t surveymock.TestingT, sc *godog.Scenario) {
 	m.surveys[m.current] = NewSurvey(t, m.options...).Start(sc.Name)
 }
 
-func (m *Manager) afterScenario(sc *godog.Scenario, _ error) {
+func (m *Manager) afterScenario(t surveymock.TestingT, sc *godog.Scenario) {
 	m.mu.Lock()
 	defer m.mu.Unlock()
 
-	if survey := m.surveys[sc.Id]; survey != nil {
-		survey.Close()
+	if s := m.surveys[sc.Id]; s != nil {
+		s.Close()
 		delete(m.surveys, sc.Id)
+
+		assert.NoError(t, m.expectationsWereMet(sc.Name, s))
 	}
 
 	m.current = ""
@@ -117,6 +124,15 @@ func (m *Manager) expectPasswordHelp(message, help string) error {
 	m.survey().ExpectPassword(message).ShowHelp(help)
 
 	return nil
+}
+
+func (m *Manager) expectationsWereMet(scenario string, s *Survey) error {
+	err := s.ExpectationsWereMet()
+	if err == nil {
+		return nil
+	}
+
+	return fmt.Errorf("in scenario %q, %w", scenario, err)
 }
 
 // New initiates a new *surveydog.Manager.

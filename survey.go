@@ -118,8 +118,6 @@ func (s *Survey) Start(scenario string) *Survey {
 func (s *Survey) Close() {
 	s.closeDoneChan()
 
-	assert.NoError(s.test, s.ExpectationsWereMet())
-
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
@@ -137,7 +135,7 @@ func (s *Survey) Close() {
 // NewSurvey creates a new survey.
 func NewSurvey(t surveymock.TestingT, options ...surveymock.MockOption) *Survey {
 	return &Survey{
-		Survey: surveymock.Mock(options...)(t),
+		Survey: surveymock.New(t, options...),
 		test:   t,
 	}
 }

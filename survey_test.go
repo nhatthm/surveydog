@@ -39,6 +39,8 @@ func TestSurvey_ExpectationsWereMet(t *testing.T) {
 	}
 
 	s.Close()
+
+	assert.NoError(t, s.ExpectationsWereMet())
 }
 
 func TestSurvey_ExpectationsWereNotMet(t *testing.T) {
