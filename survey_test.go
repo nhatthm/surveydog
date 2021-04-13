@@ -40,6 +40,8 @@ func TestSurvey_ExpectationsWereMet(t *testing.T) {
 
 	s.Close()
 
+	<-time.After(surveymock.ReactionTime)
+
 	assert.NoError(t, s.ExpectationsWereMet())
 }
 

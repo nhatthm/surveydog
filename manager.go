@@ -3,6 +3,7 @@ package surveydog
 import (
 	"fmt"
 	"sync"
+	"time"
 
 	"github.com/AlecAivazis/survey/v2/terminal"
 	"github.com/cucumber/godog"
@@ -64,6 +65,8 @@ func (m *Manager) afterScenario(t surveymock.TestingT, sc *godog.Scenario) {
 	if s := m.surveys[sc.Id]; s != nil {
 		s.Close()
 		delete(m.surveys, sc.Id)
+
+		<-time.After(surveymock.ReactionTime)
 
 		assert.NoError(t, m.expectationsWereMet(sc.Name, s))
 	}
