@@ -66,7 +66,7 @@ func (m *Manager) afterScenario(t surveymock.TestingT, sc *godog.Scenario) {
 		s.Close()
 		delete(m.surveys, sc.Id)
 
-		assert.NoError(t, m.ExpectationsWereMet(sc.Name, s))
+		assert.NoError(t, m.expectationsWereMet(sc.Name, s))
 	}
 
 	m.current = ""
@@ -127,9 +127,9 @@ func (m *Manager) expectPasswordHelp(message, help string) error {
 	return nil
 }
 
-// ExpectationsWereMet checks whether all queued expectations were met in order.
+// expectationsWereMet checks whether all queued expectations were met in order.
 // If any of them was not met - an error is returned.
-func (m *Manager) ExpectationsWereMet(scenario string, s *Survey) error {
+func (m *Manager) expectationsWereMet(scenario string, s *Survey) error {
 	<-time.After(surveymock.ReactionTime)
 
 	err := s.ExpectationsWereMet()

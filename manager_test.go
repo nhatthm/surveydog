@@ -55,7 +55,7 @@ func T() *TestingT {
 	}
 }
 
-func TestManager_ExpectationsWereMet(t *testing.T) {
+func TestManager_expectationsWereMet(t *testing.T) {
 	t.Parallel()
 
 	testingT := T()
