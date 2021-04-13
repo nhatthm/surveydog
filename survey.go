@@ -69,14 +69,14 @@ func (s *Survey) Stdio() terminal.Stdio {
 }
 
 // Expect runs an expectation against a given console.
-func (s *Survey) Expect() error {
+func (s *Survey) Expect(c surveymock.Console) error {
 	for {
 		select {
 		case <-s.getDoneChan():
 			return nil
 
 		default:
-			err := s.Survey.Expect(s.console)
+			err := s.Survey.Expect(c)
 			if err != nil && !errors.Is(err, surveymock.ErrNoExpectation) {
 				return err
 			}
@@ -100,7 +100,7 @@ func (s *Survey) Start() *Survey {
 	s.state = state
 
 	go func() {
-		assert.NoError(s.test, s.Expect())
+		assert.NoError(s.test, s.Expect(s.console))
 	}()
 
 	return s
