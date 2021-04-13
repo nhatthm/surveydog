@@ -66,6 +66,8 @@ func TestManager_expectationsWereMet(t *testing.T) {
 
 	assert.Nil(t, s.expectPasswordAnswer("Enter password:", "password"))
 
+	<-time.After(50 * time.Millisecond)
+
 	doneCh := make(chan struct{}, 1)
 
 	go func() {
