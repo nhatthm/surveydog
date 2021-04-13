@@ -68,7 +68,11 @@ func TestManager_ExpectationsWereNotMet(t *testing.T) {
 
 	s.afterScenario(testingT, sc)
 
-	expectedError := "in scenario \"ExpectationsWereNotMet\", there are remaining expectations that were not met:\n\t            \t\n\t            \tType   : Password\n\t            \tMessage: \"Enter password:\"\n\t            \tAnswer : \"password\"\n"
+	expectedError := `in scenario "ExpectationsWereNotMet", there are remaining expectations that were not met:\
+[\t\s]*Type   : Password\
+[\t\s]*Message: "Enter password:"\
+[\t\s]*Answer : "password"\
+`
 
-	assert.Contains(t, testingT.ErrorString(), expectedError)
+	assert.Regexp(t, expectedError, testingT.ErrorString())
 }
