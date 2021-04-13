@@ -10,6 +10,7 @@ import (
 	"github.com/hinshun/vt10x"
 	"github.com/nhatthm/surveymock"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 // nolint: gochecknoinits
@@ -100,9 +101,7 @@ func (s *Survey) Start(scenario string) *Survey {
 	s.output = new(surveymock.Buffer)
 
 	console, state, err := vt10x.NewVT10XConsole(expect.WithStdout(s.output))
-	if err != nil {
-		panic(err)
-	}
+	require.NoError(s.test, err)
 
 	s.console = console
 	s.state = state
