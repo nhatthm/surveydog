@@ -10,7 +10,7 @@ import (
 	"testing"
 
 	"github.com/cucumber/godog"
-	"github.com/nhatthm/surveymock"
+	"github.com/nhatthm/surveyexpect"
 	"github.com/stretchr/testify/assert"
 
 	"github.com/nhatthm/surveydog"
@@ -22,7 +22,7 @@ import (
 var (
 	runGoDogTests bool
 
-	out = new(surveymock.Buffer)
+	out = new(surveyexpect.Buffer)
 	opt = godog.Options{
 		Strict: true,
 		Output: out,

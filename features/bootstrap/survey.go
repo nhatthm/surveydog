@@ -8,7 +8,7 @@ import (
 	"github.com/AlecAivazis/survey/v2"
 	"github.com/AlecAivazis/survey/v2/terminal"
 	"github.com/cucumber/godog"
-	"github.com/nhatthm/surveymock/options"
+	"github.com/nhatthm/surveyexpect/options"
 	"github.com/stretchr/testify/assert"
 
 	"github.com/nhatthm/surveydog"

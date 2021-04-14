@@ -8,24 +8,24 @@ import (
 	"github.com/AlecAivazis/survey/v2/terminal"
 	"github.com/Netflix/go-expect"
 	"github.com/hinshun/vt10x"
-	"github.com/nhatthm/surveymock"
+	"github.com/nhatthm/surveyexpect"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
 // nolint: gochecknoinits
 func init() {
-	surveymock.ReactionTime = 10 * time.Millisecond
+	surveyexpect.ReactionTime = 10 * time.Millisecond
 }
 
-// Survey is a wrapper around *surveymock.Survey to make it run with cucumber/godog.
+// Survey is a wrapper around *surveyexpect.Survey to make it run with cucumber/godog.
 type Survey struct {
-	*surveymock.Survey
-	console surveymock.Console
-	output  *surveymock.Buffer
+	*surveyexpect.Survey
+	console surveyexpect.Console
+	output  *surveyexpect.Buffer
 	state   *vt10x.State
 
-	test surveymock.TestingT
+	test surveyexpect.TestingT
 	mu   sync.Mutex
 
 	doneChan chan struct{}
@@ -63,7 +63,7 @@ func (s *Survey) closeDoneChan() {
 	}
 }
 
-// Stdio returns terminal.Stdio from surveymock.Console.
+// Stdio returns terminal.Stdio from surveyexpect.Console.
 func (s *Survey) Stdio() terminal.Stdio {
 	s.mu.Lock()
 	defer s.mu.Unlock()
@@ -76,7 +76,7 @@ func (s *Survey) Stdio() terminal.Stdio {
 }
 
 // Expect runs an expectation against a given console.
-func (s *Survey) Expect(c surveymock.Console) error {
+func (s *Survey) Expect(c surveyexpect.Console) error {
 	for {
 		select {
 		case <-s.getDoneChan():
@@ -84,7 +84,7 @@ func (s *Survey) Expect(c surveymock.Console) error {
 
 		default:
 			err := s.Survey.Expect(c)
-			if err != nil && !errors.Is(err, surveymock.ErrNoExpectation) {
+			if err != nil && !errors.Is(err, surveyexpect.ErrNoExpectation) {
 				return err
 			}
 		}
@@ -98,7 +98,7 @@ func (s *Survey) Start(scenario string) *Survey {
 
 	s.test.Logf("Scenario: %s\n", scenario)
 
-	s.output = new(surveymock.Buffer)
+	s.output = new(surveyexpect.Buffer)
 
 	console, state, err := vt10x.NewVT10XConsole(expect.WithStdout(s.output))
 	require.NoError(s.test, err)
@@ -132,9 +132,9 @@ func (s *Survey) Close() {
 }
 
 // NewSurvey creates a new survey.
-func NewSurvey(t surveymock.TestingT, options ...surveymock.MockOption) *Survey {
+func NewSurvey(t surveyexpect.TestingT, options ...surveyexpect.ExpectOption) *Survey {
 	return &Survey{
-		Survey: surveymock.New(t, options...),
+		Survey: surveyexpect.New(t, options...),
 		test:   t,
 	}
 }

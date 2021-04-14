@@ -6,13 +6,13 @@ import (
 	"time"
 
 	"github.com/cucumber/godog"
-	"github.com/nhatthm/surveymock"
+	"github.com/nhatthm/surveyexpect"
 	"github.com/stretchr/testify/assert"
 )
 
 type TestingT struct {
-	error *surveymock.Buffer
-	log   *surveymock.Buffer
+	error *surveyexpect.Buffer
+	log   *surveyexpect.Buffer
 
 	clean func()
 }
@@ -47,8 +47,8 @@ func (t *TestingT) LogString() string {
 
 func T() *TestingT {
 	return &TestingT{
-		error: new(surveymock.Buffer),
-		log:   new(surveymock.Buffer),
+		error: new(surveyexpect.Buffer),
+		log:   new(surveyexpect.Buffer),
 		clean: func() {},
 	}
 }

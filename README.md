@@ -64,7 +64,7 @@ func TestIntegration(t *testing.T) {
 
 Step 2: Pass `stdio` to the prompts
 
-Same as [`surveymock`](https://github.com/nhatthm/surveymock#mock), you have to define a way to inject `Manager.Stdio()` into the prompts in your code. For
+Same as [`surveyexpect`](https://github.com/nhatthm/surveyexpect#expect), you have to define a way to inject `Manager.Stdio()` into the prompts in your code. For
 every scenario, the manager will start a new terminal emulator. Without the injection, there is no way to capture and response to the prompts.
 
 For example:

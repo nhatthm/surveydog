@@ -7,22 +7,22 @@ import (
 
 	"github.com/AlecAivazis/survey/v2/terminal"
 	"github.com/cucumber/godog"
-	"github.com/nhatthm/surveymock"
+	"github.com/nhatthm/surveyexpect"
 	"github.com/stretchr/testify/assert"
 )
 
-// Manager is a wrapper around *surveymock.Survey to make it run with cucumber/godog.
+// Manager is a wrapper around *surveyexpect.Survey to make it run with cucumber/godog.
 type Manager struct {
 	surveys map[string]*Survey
 	current string
 
 	mu sync.Mutex
 
-	options []surveymock.MockOption
+	options []surveyexpect.ExpectOption
 }
 
 // RegisterContext register the survey to a *godog.ScenarioContext.
-func (m *Manager) RegisterContext(t surveymock.TestingT, ctx *godog.ScenarioContext) {
+func (m *Manager) RegisterContext(t surveyexpect.TestingT, ctx *godog.ScenarioContext) {
 	// Manage state.
 	ctx.BeforeScenario(func(sc *godog.Scenario) {
 		m.beforeScenario(t, sc)
@@ -50,7 +50,7 @@ func (m *Manager) Stdio() terminal.Stdio {
 	return m.survey().Stdio()
 }
 
-func (m *Manager) beforeScenario(t surveymock.TestingT, sc *godog.Scenario) {
+func (m *Manager) beforeScenario(t surveyexpect.TestingT, sc *godog.Scenario) {
 	m.mu.Lock()
 	defer m.mu.Unlock()
 
@@ -58,7 +58,7 @@ func (m *Manager) beforeScenario(t surveymock.TestingT, sc *godog.Scenario) {
 	m.surveys[m.current] = NewSurvey(t, m.options...).Start(sc.Name)
 }
 
-func (m *Manager) afterScenario(t surveymock.TestingT, sc *godog.Scenario) {
+func (m *Manager) afterScenario(t surveyexpect.TestingT, sc *godog.Scenario) {
 	m.mu.Lock()
 	defer m.mu.Unlock()
 
@@ -130,7 +130,7 @@ func (m *Manager) expectPasswordHelp(message, help string) error {
 // expectationsWereMet checks whether all queued expectations were met in order.
 // If any of them was not met - an error is returned.
 func (m *Manager) expectationsWereMet(scenario string, s *Survey) error {
-	<-time.After(surveymock.ReactionTime)
+	<-time.After(surveyexpect.ReactionTime)
 
 	err := s.ExpectationsWereMet()
 	if err == nil {
@@ -141,7 +141,7 @@ func (m *Manager) expectationsWereMet(scenario string, s *Survey) error {
 }
 
 // New initiates a new *surveydog.Manager.
-func New(options ...surveymock.MockOption) *Manager {
+func New(options ...surveyexpect.ExpectOption) *Manager {
 	return &Manager{
 		surveys: make(map[string]*Survey),
 		options: options,
