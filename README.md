@@ -30,7 +30,12 @@ Step 1: Register to `godog`
 
 Initialize a `surveydog.Manager` with `surveydog.New()` then add it into the `ScenarioInitializer`
 
-Example
+Step 2: Pass `stdio` to the prompts
+
+Same as [`surveyexpect`](https://github.com/nhatthm/surveyexpect#expect), you have to define a way to inject `terminal.Stdio` into the prompts in your code. For
+every scenario, the manager will start a new terminal emulator. Without the injection, there is no way to capture and response to the prompts.
+
+For example:
 
 ```go
 package mypackage
@@ -39,18 +44,42 @@ import (
     "math/rand"
     "testing"
 
+    survey "github.com/AlecAivazis/survey/v2"
+    "github.com/AlecAivazis/survey/v2/terminal"
     "github.com/cucumber/godog"
     "github.com/nhatthm/surveydog"
+    "github.com/nhatthm/surveyexpect/options"
 )
+
+type Wizard struct {
+    stdio terminal.Stdio
+}
+
+func (w *Wizard) withStdio(stdio terminal.Stdio) {
+    w.stdio = stdio
+}
+
+func (w *Wizard) ask() (bool, error) {
+    var response bool
+
+    p := &survey.Confirm{Message: "Confirm?"}
+    err := survey.AskOne(p, &response, options.WithStdio(w.stdio))
+
+    return response, err
+}
 
 func TestIntegration(t *testing.T) {
     m := surveydog.New()
+    wizard := &Wizard{}
 
     suite := godog.TestSuite{
-        Name:                 "Integration",
-        TestSuiteInitializer: nil,
+        Name: "Integration",
         ScenarioInitializer: func(ctx *godog.ScenarioContext) {
-            m.RegisterContext(t, ctx) // Register `surveydog.Manager`
+            // Register `surveydog.Manager` with listeners.
+            m.RegisterContext(t, ctx, func(_ *godog.Scenario, stdio terminal.Stdio) {
+                // Update stdio of the wizard.
+                wizard.withStdio(stdio)
+            })
         },
         Options: &godog.Options{
             Strict:    true,
@@ -58,20 +87,12 @@ func TestIntegration(t *testing.T) {
             Randomize: rand.Int63(),
         },
     }
-    suite.Run()
+
+    // Run the suite that triggers wizard.ask()
 }
 ```
 
-Step 2: Pass `stdio` to the prompts
-
-Same as [`surveyexpect`](https://github.com/nhatthm/surveyexpect#expect), you have to define a way to inject `Manager.Stdio()` into the prompts in your code. For
-every scenario, the manager will start a new terminal emulator. Without the injection, there is no way to capture and response to the prompts.
-
-For example:
-
-- Depend on `surveydog.Manager` for
-  injection: https://github.com/nhatthm/surveydog/blob/7e5729634a08a552ac447fb2f476c19beba0c33a/features/bootstrap/survey.go#L151-L156
-- Inject: https://github.com/nhatthm/surveydog/blob/7e5729634a08a552ac447fb2f476c19beba0c33a/features/bootstrap/survey.go#L41
+See more: [#Examples](#Examples)
 
 ## Steps
 
@@ -205,8 +226,10 @@ Example:
 
 ## Examples
 
-- Register the steps: https://github.com/nhatthm/surveydog/blob/7e5729634a08a552ac447fb2f476c19beba0c33a/features/bootstrap/godog_test.go#L45-L51
-- Pass `stdio` to the prompts: https://github.com/nhatthm/surveydog/blob/7e5729634a08a552ac447fb2f476c19beba0c33a/features/bootstrap/survey.go#L41
+- Register for
+  injection: https://github.com/nhatthm/surveydog/blob/33d3788186947856b8fbf11e94604c450f6af6e4/features/bootstrap/godog_test.go#L49
+- Inject: https://github.com/nhatthm/surveydog/blob/33d3788186947856b8fbf11e94604c450f6af6e4/features/bootstrap/survey.go#L36-L41
+- Use: https://github.com/nhatthm/surveydog/blob/33d3788186947856b8fbf11e94604c450f6af6e4/features/bootstrap/survey.go#L57
 
 Full suite: https://github.com/nhatthm/surveydog/tree/master/features
 
