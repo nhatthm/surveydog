@@ -21,4 +21,4 @@ test-unit:
 
 test-integration:
 	@echo ">> integration test"
-	@$(GO) test ./features/... -gcflags=-l -coverprofile=features.coverprofile -coverpkg ./...  -godog -race
+	@$(GO) test ./features/... -gcflags=-l -coverprofile=features.coverprofile -coverpkg ./... -godog -race

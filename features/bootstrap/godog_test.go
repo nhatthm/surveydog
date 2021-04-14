@@ -43,10 +43,10 @@ func TestIntegration(t *testing.T) {
 	}
 
 	m := surveydog.New()
-	p := NewPrompt(m)
+	p := NewPrompt()
 
 	RunSuite(t, "..", func(_ *testing.T, ctx *godog.ScenarioContext) {
-		m.RegisterContext(t, ctx)
+		m.RegisterContext(t, ctx, p.WithStdio)
 		p.RegisterContext(ctx)
 	})
 }

@@ -22,10 +22,10 @@ type Manager struct {
 }
 
 // RegisterContext register the survey to a *godog.ScenarioContext.
-func (m *Manager) RegisterContext(t surveyexpect.TestingT, ctx *godog.ScenarioContext) {
+func (m *Manager) RegisterContext(t surveyexpect.TestingT, ctx *godog.ScenarioContext, listeners ...func(sc *godog.Scenario, stdio terminal.Stdio)) {
 	// Manage state.
 	ctx.BeforeScenario(func(sc *godog.Scenario) {
-		m.beforeScenario(t, sc)
+		m.beforeScenario(t, sc, listeners...)
 	})
 
 	ctx.AfterScenario(func(sc *godog.Scenario, _ error) {
@@ -50,12 +50,18 @@ func (m *Manager) Stdio() terminal.Stdio {
 	return m.survey().Stdio()
 }
 
-func (m *Manager) beforeScenario(t surveyexpect.TestingT, sc *godog.Scenario) {
+func (m *Manager) beforeScenario(t surveyexpect.TestingT, sc *godog.Scenario, listeners ...func(sc *godog.Scenario, stdio terminal.Stdio)) {
 	m.mu.Lock()
 	defer m.mu.Unlock()
 
+	s := NewSurvey(t, m.options...).Start(sc.Name)
+
 	m.current = sc.Id
-	m.surveys[m.current] = NewSurvey(t, m.options...).Start(sc.Name)
+	m.surveys[m.current] = s
+
+	for _, l := range listeners {
+		l(sc, s.Stdio())
+	}
 }
 
 func (m *Manager) afterScenario(t surveyexpect.TestingT, sc *godog.Scenario) {

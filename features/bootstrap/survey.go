@@ -3,6 +3,7 @@ package bootstrap
 import (
 	"errors"
 	"fmt"
+	"sync"
 	"time"
 
 	"github.com/AlecAivazis/survey/v2"
@@ -10,13 +11,12 @@ import (
 	"github.com/cucumber/godog"
 	"github.com/nhatthm/surveyexpect/options"
 	"github.com/stretchr/testify/assert"
-
-	"github.com/nhatthm/surveydog"
 )
 
 // Prompt produces prompts and validate the answers.
 type Prompt struct {
-	m *surveydog.Manager
+	stdio terminal.Stdio
+	mu    sync.Mutex
 }
 
 // RegisterContext register Prompt to a *godog.ScenarioContext.
@@ -32,13 +32,29 @@ func (p *Prompt) RegisterContext(ctx *godog.ScenarioContext) {
 	ctx.Step(`ask for password "([^"]*)", get interrupted`, p.askPasswordInterrupted)
 }
 
+// WithStdio configures stdio for a given scenario.
+func (p *Prompt) WithStdio(_ *godog.Scenario, stdio terminal.Stdio) {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+
+	p.stdio = stdio
+}
+
+// Stdio returns the current stdio.
+func (p *Prompt) Stdio() terminal.Stdio {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+
+	return p.stdio
+}
+
 func (p *Prompt) ask(prompt survey.Prompt, response interface{}) (err error) {
 	doneCh := make(chan struct{})
 
 	go func() {
 		defer close(doneCh)
 
-		err = survey.AskOne(prompt, response, options.WithStdio(p.m.Stdio()))
+		err = survey.AskOne(prompt, response, options.WithStdio(p.Stdio()))
 	}()
 
 	select {
@@ -149,8 +165,6 @@ func (p *Prompt) askPasswordInterrupted(message string) error {
 }
 
 // NewPrompt initiates a new *Prompt.
-func NewPrompt(m *surveydog.Manager) *Prompt {
-	return &Prompt{
-		m: m,
-	}
+func NewPrompt() *Prompt {
+	return &Prompt{}
 }
