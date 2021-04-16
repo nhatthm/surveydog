@@ -3,7 +3,6 @@ package surveydog
 import (
 	"errors"
 	"sync"
-	"time"
 
 	"github.com/AlecAivazis/survey/v2/terminal"
 	"github.com/Netflix/go-expect"
@@ -12,11 +11,6 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
-
-// nolint: gochecknoinits
-func init() {
-	surveyexpect.ReactionTime = 10 * time.Millisecond
-}
 
 // Survey is a wrapper around *surveyexpect.Survey to make it run with cucumber/godog.
 type Survey struct {
