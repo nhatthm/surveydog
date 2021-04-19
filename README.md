@@ -35,6 +35,8 @@ Step 2: Pass `stdio` to the prompts
 Same as [`surveyexpect`](https://github.com/nhatthm/surveyexpect#expect), you have to define a way to inject `terminal.Stdio` into the prompts in your code. For
 every scenario, the manager will start a new terminal emulator. Without the injection, there is no way to capture and response to the prompts.
 
+You can register to the `Start` event and use the provided `terminal.Stdio` accordingly.
+
 For example:
 
 ```go
@@ -55,7 +57,7 @@ type Wizard struct {
     stdio terminal.Stdio
 }
 
-func (w *Wizard) withStdio(stdio terminal.Stdio) {
+func (w *Wizard) start(_ *godog.Scenario, stdio terminal.Stdio) {
     w.stdio = stdio
 }
 
@@ -69,17 +71,14 @@ func (w *Wizard) ask() (bool, error) {
 }
 
 func TestIntegration(t *testing.T) {
-    m := surveydog.New()
     wizard := &Wizard{}
+    m := surveydog.New(t).
+    	WithStarter(wizard.start)
 
     suite := godog.TestSuite{
         Name: "Integration",
         ScenarioInitializer: func(ctx *godog.ScenarioContext) {
-            // Register `surveydog.Manager` with listeners.
-            m.RegisterContext(t, ctx, func(_ *godog.Scenario, stdio terminal.Stdio) {
-                // Update stdio of the wizard.
-                wizard.withStdio(stdio)
-            })
+            m.RegisterContext(ctx)
         },
         Options: &godog.Options{
             Strict:    true,
@@ -227,9 +226,9 @@ Example:
 ## Examples
 
 - Register for
-  injection: https://github.com/nhatthm/surveydog/blob/33d3788186947856b8fbf11e94604c450f6af6e4/features/bootstrap/godog_test.go#L49
-- Inject: https://github.com/nhatthm/surveydog/blob/33d3788186947856b8fbf11e94604c450f6af6e4/features/bootstrap/survey.go#L36-L41
-- Use: https://github.com/nhatthm/surveydog/blob/33d3788186947856b8fbf11e94604c450f6af6e4/features/bootstrap/survey.go#L57
+  injection: https://github.com/nhatthm/surveydog/blob/1419700dba773b5de08c8e5aee0fb961c5ea7a90/features/bootstrap/godog_test.go#L47
+- Inject: https://github.com/nhatthm/surveydog/blob/1419700dba773b5de08c8e5aee0fb961c5ea7a90/features/bootstrap/survey.go#L36-L41
+- Use: https://github.com/nhatthm/surveydog/blob/1419700dba773b5de08c8e5aee0fb961c5ea7a90/features/bootstrap/survey.go#L57
 
 Full suite: https://github.com/nhatthm/surveydog/tree/master/features
 
