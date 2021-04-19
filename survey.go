@@ -4,20 +4,13 @@ import (
 	"errors"
 	"sync"
 
-	"github.com/AlecAivazis/survey/v2/terminal"
-	"github.com/Netflix/go-expect"
-	"github.com/hinshun/vt10x"
 	"github.com/nhatthm/surveyexpect"
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 )
 
 // Survey is a wrapper around *surveyexpect.Survey to make it run with cucumber/godog.
 type Survey struct {
 	*surveyexpect.Survey
-	console surveyexpect.Console
-	output  *surveyexpect.Buffer
-	state   *vt10x.State
 
 	test surveyexpect.TestingT
 	mu   sync.Mutex
@@ -57,18 +50,6 @@ func (s *Survey) closeDoneChan() {
 	}
 }
 
-// Stdio returns terminal.Stdio from surveyexpect.Console.
-func (s *Survey) Stdio() terminal.Stdio {
-	s.mu.Lock()
-	defer s.mu.Unlock()
-
-	return terminal.Stdio{
-		In:  s.console.Tty(),
-		Out: s.console.Tty(),
-		Err: s.console.Tty(),
-	}
-}
-
 // Expect runs an expectation against a given console.
 func (s *Survey) Expect(c surveyexpect.Console) error {
 	for {
@@ -86,22 +67,9 @@ func (s *Survey) Expect(c surveyexpect.Console) error {
 }
 
 // Start starts a new survey.
-func (s *Survey) Start(scenario string) *Survey {
-	s.mu.Lock()
-	defer s.mu.Unlock()
-
-	s.test.Logf("Scenario: %s\n", scenario)
-
-	s.output = new(surveyexpect.Buffer)
-
-	console, state, err := vt10x.NewVT10XConsole(expect.WithStdout(s.output))
-	require.NoError(s.test, err)
-
-	s.console = console
-	s.state = state
-
+func (s *Survey) Start(console surveyexpect.Console) *Survey {
 	go func() {
-		assert.NoError(s.test, s.Expect(s.console))
+		assert.NoError(s.test, s.Expect(console))
 	}()
 
 	return s
@@ -110,19 +78,6 @@ func (s *Survey) Start(scenario string) *Survey {
 // Close notifies other parties and close the survey.
 func (s *Survey) Close() {
 	s.closeDoneChan()
-
-	s.mu.Lock()
-	defer s.mu.Unlock()
-
-	s.test.Logf("Raw output: %q\n", s.output.String())
-
-	// Dump the terminal's screen.
-	s.test.Logf("State: \n%s\n", expect.StripTrailingEmptyLines(s.state.String()))
-	s.test.Log()
-
-	s.console = nil
-	s.state = nil
-	s.output = nil
 }
 
 // NewSurvey creates a new survey.

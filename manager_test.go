@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/cucumber/godog"
+	"github.com/nhatthm/consoledog"
 	"github.com/nhatthm/surveyexpect"
 	"github.com/stretchr/testify/assert"
 )
@@ -57,16 +58,17 @@ func TestManager_ExpectationsWereNotMet(t *testing.T) {
 	t.Parallel()
 
 	testingT := T()
-	s := New()
+	c := consoledog.New(testingT)
+	s := New(testingT).WithConsole(c)
 	sc := &godog.Scenario{Id: "42", Name: "ExpectationsWereNotMet"}
 
-	s.beforeScenario(testingT, sc)
+	c.NewConsole(sc)
 
 	assert.Nil(t, s.expectPasswordAnswer("Enter password:", "password"))
 
 	<-time.After(50 * time.Millisecond)
 
-	s.afterScenario(testingT, sc)
+	s.close(sc)
 
 	expectedError := `in scenario "ExpectationsWereNotMet", there are remaining expectations that were not met:\
 [\t\s]*Type   : Password\

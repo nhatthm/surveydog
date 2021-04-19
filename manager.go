@@ -6,31 +6,51 @@ import (
 	"time"
 
 	"github.com/AlecAivazis/survey/v2/terminal"
+	"github.com/Netflix/go-expect"
 	"github.com/cucumber/godog"
+	"github.com/nhatthm/consoledog"
 	"github.com/nhatthm/surveyexpect"
 	"github.com/stretchr/testify/assert"
 )
 
+// Starter is a callback when survey starts.
+type Starter func(sc *godog.Scenario, stdio terminal.Stdio)
+
 // Manager is a wrapper around *surveyexpect.Survey to make it run with cucumber/godog.
 type Manager struct {
+	console *consoledog.Manager
 	surveys map[string]*Survey
 	current string
 
-	mu sync.Mutex
+	starters []Starter
+
+	test surveyexpect.TestingT
+	mu   sync.Mutex
 
 	options []surveyexpect.ExpectOption
 }
 
-// RegisterContext register the survey to a *godog.ScenarioContext.
-func (m *Manager) RegisterContext(t surveyexpect.TestingT, ctx *godog.ScenarioContext, listeners ...func(sc *godog.Scenario, stdio terminal.Stdio)) {
+func (m *Manager) registerConsole(ctx *godog.ScenarioContext) {
+	if m.console != nil {
+		return
+	}
+
+	console := consoledog.New(m.test)
+	m.attach(console)
+
 	// Manage state.
 	ctx.BeforeScenario(func(sc *godog.Scenario) {
-		m.beforeScenario(t, sc, listeners...)
+		console.NewConsole(sc)
 	})
 
 	ctx.AfterScenario(func(sc *godog.Scenario, _ error) {
-		m.afterScenario(t, sc)
+		console.CloseConsole(sc)
 	})
+}
+
+// RegisterContext register the survey to a *godog.ScenarioContext.
+func (m *Manager) RegisterContext(ctx *godog.ScenarioContext) {
+	m.registerConsole(ctx)
 
 	// Confirm prompt
 	ctx.Step(`(?:(?:get)|(?:see))s? a(?:nother)? confirm prompt "([^"]*)".* answers? yes`, m.expectConfirmYes)
@@ -45,26 +65,25 @@ func (m *Manager) RegisterContext(t surveyexpect.TestingT, ctx *godog.ScenarioCo
 	ctx.Step(`(?:(?:get)|(?:see))s? a(?:nother)? password prompt "([^"]*)".* asks? for help and sees? "([^"]*)"`, m.expectPasswordHelp)
 }
 
-// Stdio returns terminal.Stdio of the current survey.
-func (m *Manager) Stdio() terminal.Stdio {
-	return m.survey().Stdio()
-}
-
-func (m *Manager) beforeScenario(t surveyexpect.TestingT, sc *godog.Scenario, listeners ...func(sc *godog.Scenario, stdio terminal.Stdio)) {
+func (m *Manager) start(sc *godog.Scenario, console *expect.Console) {
 	m.mu.Lock()
 	defer m.mu.Unlock()
 
-	s := NewSurvey(t, m.options...).Start(sc.Name)
+	s := NewSurvey(m.test, m.options...).Start(console)
 
 	m.current = sc.Id
 	m.surveys[m.current] = s
 
-	for _, l := range listeners {
-		l(sc, s.Stdio())
+	for _, start := range m.starters {
+		start(sc, terminal.Stdio{
+			In:  console.Tty(),
+			Out: console.Tty(),
+			Err: console.Tty(),
+		})
 	}
 }
 
-func (m *Manager) afterScenario(t surveyexpect.TestingT, sc *godog.Scenario) {
+func (m *Manager) close(sc *godog.Scenario) {
 	m.mu.Lock()
 	defer m.mu.Unlock()
 
@@ -72,7 +91,7 @@ func (m *Manager) afterScenario(t surveyexpect.TestingT, sc *godog.Scenario) {
 		s.Close()
 		delete(m.surveys, sc.Id)
 
-		assert.NoError(t, m.expectationsWereMet(sc.Name, s))
+		assert.NoError(m.test, m.expectationsWereMet(sc.Name, s))
 	}
 
 	m.current = ""
@@ -146,10 +165,31 @@ func (m *Manager) expectationsWereMet(scenario string, s *Survey) error {
 	return fmt.Errorf("in scenario %q, %w", scenario, err)
 }
 
+func (m *Manager) attach(console *consoledog.Manager) *consoledog.Manager {
+	return console.
+		WithStarter(m.start).
+		WithCloser(m.close)
+}
+
+// WithConsole sets console manager.
+func (m *Manager) WithConsole(console *consoledog.Manager) *Manager {
+	m.console = m.attach(console)
+
+	return m
+}
+
+// WithStarter adds a mew Starter to Manager.
+func (m *Manager) WithStarter(s Starter) *Manager {
+	m.starters = append(m.starters, s)
+
+	return m
+}
+
 // New initiates a new *surveydog.Manager.
-func New(options ...surveyexpect.ExpectOption) *Manager {
+func New(t surveyexpect.TestingT, options ...surveyexpect.ExpectOption) *Manager {
 	return &Manager{
 		surveys: make(map[string]*Survey),
 		options: options,
+		test:    t,
 	}
 }

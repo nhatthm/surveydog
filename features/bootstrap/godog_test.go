@@ -42,11 +42,12 @@ func TestIntegration(t *testing.T) {
 		t.Skip(`Missing "-godog" flag, skipping integration test.`)
 	}
 
-	m := surveydog.New()
 	p := NewPrompt()
+	m := surveydog.New(t).
+		WithStarter(p.WithStdio)
 
 	RunSuite(t, "..", func(_ *testing.T, ctx *godog.ScenarioContext) {
-		m.RegisterContext(t, ctx, p.WithStdio)
+		m.RegisterContext(ctx)
 		p.RegisterContext(ctx)
 	})
 }
