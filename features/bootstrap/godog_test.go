@@ -10,6 +10,7 @@ import (
 	"testing"
 
 	"github.com/cucumber/godog"
+	"github.com/nhatthm/consoledog"
 	"github.com/nhatthm/surveyexpect"
 	"github.com/stretchr/testify/assert"
 
@@ -43,10 +44,13 @@ func TestIntegration(t *testing.T) {
 	}
 
 	p := NewPrompt()
+	cm := consoledog.New(t)
 	m := surveydog.New(t).
-		WithStarter(p.WithStdio)
+		WithStarter(p.WithStdio).
+		WithConsole(cm)
 
 	RunSuite(t, "..", func(_ *testing.T, ctx *godog.ScenarioContext) {
+		cm.RegisterContext(ctx)
 		m.RegisterContext(ctx)
 		p.RegisterContext(ctx)
 	})

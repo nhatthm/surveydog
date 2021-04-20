@@ -16,3 +16,15 @@ Feature: Password
 
         Then ask for password "Enter password:", get interrupted
 
+    Scenario: Multiple Password prompts
+        Given I see a password prompt "Enter username:", I answer "user@example.org"
+        And I see a password prompt "Enter password:", I answer "123456"
+
+        Then ask for password "Enter username:", receive "user@example.org"
+        And ask for password "Enter password:", receive "123456"
+
+        And console output is:
+        """
+        ? Enter username: ****************
+        ? Enter password: ******
+        """
