@@ -22,7 +22,15 @@ go get github.com/nhatthm/surveydog
 
 ### Supported Types
 
-For now, it only supports [`Confirm`](https://github.com/AlecAivazis/survey#confirm) and [`Password`](https://github.com/AlecAivazis/survey#password)
+Type | Supported | Supported Actions
+:--- | :---: | :---
+`Confirm` | ✓ | <ul><li>Answer `yes`, `no` or a custom</li><li>Interrupt (`^C`)</li><li>Ask for help</li></ul>
+`Editor` | ✘ |
+`Input` | ✘ |
+`Multiline` | ✘ |
+`Multiselect` | ✘ |
+`Password` | ✓ | <ul><li>Answer (+ check for `*`)</li><li>No answer</li><li>Interrupt (`^C`)</li><li>Ask for help</li></ul>
+`Select` | ✘ |
 
 ## Setup
 
