@@ -59,7 +59,7 @@ func (s *Survey) Expect(c surveyexpect.Console) error {
 
 		default:
 			err := s.Survey.Expect(c)
-			if err != nil && !errors.Is(err, surveyexpect.ErrNoExpectation) {
+			if err != nil && !errors.Is(err, surveyexpect.ErrNothingToDo) {
 				return err
 			}
 		}

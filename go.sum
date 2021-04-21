@@ -173,6 +173,8 @@ github.com/nhatthm/consoledog v0.1.3 h1:udYv6qO79JC5KcXy8iPS+iB92XaZGUbUocBjpsRI
 github.com/nhatthm/consoledog v0.1.3/go.mod h1:Zb1FInjsGiXmWYCEUE4NWCf4nR9LgVT/TGkpgCTiFOM=
 github.com/nhatthm/surveyexpect v0.3.0 h1:DZBEY67ynBlwDa/hqq5ZVw2vW2oUqY7DChmWEEJiBGY=
 github.com/nhatthm/surveyexpect v0.3.0/go.mod h1:KlX6gIkfmduh8f6WP1FyAbJHOzj0nGLgOJ/3gjDLu2A=
+github.com/nhatthm/surveyexpect v0.4.0 h1:Vfax5piXqZTfpSc0SjJjSNfgAUMXs3wCJlPnH9cSap8=
+github.com/nhatthm/surveyexpect v0.4.0/go.mod h1:KlX6gIkfmduh8f6WP1FyAbJHOzj0nGLgOJ/3gjDLu2A=
 github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e/go.mod h1:zD1mROLANZcx1PVRCS0qkT7pwLkGfwJo4zjcN/Tysno=
 github.com/oklog/ulid v1.3.1/go.mod h1:CirwcVhetQ6Lv90oh/F+FBtV6XMibvdAFo93nm5qn4U=
 github.com/pascaldekloe/goe v0.0.0-20180627143212-57f6aae5913c/go.mod h1:lzWF7FIEvWOWxwDKqyGYQf6ZUaNfKdP144TG7ZOy1lc=
