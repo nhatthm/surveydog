@@ -1,5 +1,6 @@
 # Cucumber Survey steps for Go
 
+[![GitHub Releases](https://img.shields.io/github/v/release/nhatthm/surveydog)](https://github.com/nhatthm/surveydog/releases/latest)
 [![Build Status](https://github.com/nhatthm/surveydog/actions/workflows/test.yaml/badge.svg)](https://github.com/nhatthm/surveydog/actions/workflows/test.yaml)
 [![codecov](https://codecov.io/gh/nhatthm/surveydog/branch/master/graph/badge.svg?token=eTdAgDE2vR)](https://codecov.io/gh/nhatthm/surveydog)
 [![Go Report Card](https://goreportcard.com/badge/github.com/nhatthm/surveydog)](https://goreportcard.com/report/github.com/nhatthm/surveydog)
