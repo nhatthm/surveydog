@@ -27,6 +27,9 @@ func (p *Prompt) RegisterContext(ctx *godog.ScenarioContext) {
 	ctx.Step(`ask for confirm "([^"]*)", receive no`, p.askConfirmWithoutHelpNo)
 	ctx.Step(`ask for confirm "([^"]*)", get interrupted`, p.askConfirmInterrupted)
 
+	ctx.Step(`ask for multiline "([^"]*)", receive:`, p.askMultilineWithAnswer)
+	ctx.Step(`ask for multiline "([^"]*)", get interrupted`, p.askMultilineInterrupted)
+
 	ctx.Step(`ask for password "([^"]*)" with help "([^"]*)", receive "([^"]*)"`, p.askPasswordWithHelp)
 	ctx.Step(`ask for password "([^"]*)", receive "([^"]*)"`, p.askPasswordWithoutHelp)
 	ctx.Step(`ask for password "([^"]*)", get interrupted`, p.askPasswordInterrupted)
@@ -112,6 +115,44 @@ func (p *Prompt) askConfirmInterrupted(message string) error {
 
 	if answer {
 		return fmt.Errorf("unexpected answer: %t", answer) // nolint: goerr113
+	}
+
+	if !errors.Is(err, terminal.InterruptErr) {
+		return err
+	}
+
+	return nil
+}
+
+func (p *Prompt) askMultiline(message string) (string, error) {
+	prompt := &survey.Multiline{
+		Message: message,
+	}
+
+	var answer string
+	err := p.ask(prompt, &answer)
+
+	return answer, err
+}
+
+func (p *Prompt) askMultilineWithAnswer(message string, expected *godog.DocString) error {
+	answer, err := p.askMultiline(message)
+	if err != nil {
+		return err
+	}
+
+	if !assert.ObjectsAreEqual(expected.Content, answer) {
+		return fmt.Errorf("expected answer: %s, got %s", expected.Content, answer) // nolint: goerr113
+	}
+
+	return nil
+}
+
+func (p *Prompt) askMultilineInterrupted(message string) error {
+	answer, err := p.askMultiline(message)
+
+	if answer != "" {
+		return fmt.Errorf("unexpected answer: %s", answer) // nolint: goerr113
 	}
 
 	if !errors.Is(err, terminal.InterruptErr) {

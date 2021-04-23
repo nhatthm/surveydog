@@ -15,7 +15,7 @@ require (
 	github.com/mattn/go-colorable v0.1.8 // indirect
 	github.com/mgutz/ansi v0.0.0-20200706080929-d51e80ef957d // indirect
 	github.com/nhatthm/consoledog v0.1.6
-	github.com/nhatthm/surveyexpect v0.5.6
+	github.com/nhatthm/surveyexpect v0.5.7
 	github.com/stretchr/testify v1.7.0
 	golang.org/x/crypto v0.0.0-20210421170649-83a5a9bb288b // indirect
 	golang.org/x/sys v0.0.0-20210423185535-09eb48e85fd7 // indirect

@@ -59,6 +59,11 @@ func (m *Manager) RegisterContext(ctx *godog.ScenarioContext) {
 	ctx.Step(`(?:(?:get)|(?:see))s? a(?:nother)? confirm prompt "([^"]*)".* interrupts?`, m.expectConfirmInterrupt)
 	ctx.Step(`(?:(?:get)|(?:see))s? a(?:nother)? confirm prompt "([^"]*)".* asks? for help and sees? "([^"]*)"`, m.expectConfirmHelp)
 
+	// Multiline prompt.
+	ctx.Step(`(?:(?:get)|(?:see))s? a(?:nother)? multiline prompt "([^"]*)".* answers? "([^"]*)"`, m.expectMultilineAnswer)
+	ctx.Step(`(?:(?:get)|(?:see))s? a(?:nother)? multiline prompt "([^"]*)".* answers?:`, m.expectMultilineAnswerMultiline)
+	ctx.Step(`(?:(?:get)|(?:see))s? a(?:nother)? multiline prompt "([^"]*)".* interrupts?`, m.expectMultilineInterrupt)
+
 	// Password prompt.
 	ctx.Step(`(?:(?:get)|(?:see))s? a(?:nother)? password prompt "([^"]*)".* answers? "([^"]*)"`, m.expectPasswordAnswer)
 	ctx.Step(`(?:(?:get)|(?:see))s? a(?:nother)? password prompt "([^"]*)".* interrupts?`, m.expectPasswordInterrupt)
@@ -130,6 +135,22 @@ func (m *Manager) expectConfirmInterrupt(message string) error {
 
 func (m *Manager) expectConfirmHelp(message, help string) error {
 	m.survey().ExpectConfirm(message).ShowHelp(help)
+
+	return nil
+}
+
+func (m *Manager) expectMultilineAnswer(message string, answer string) error {
+	m.survey().ExpectMultiline(message).Answer(answer)
+
+	return nil
+}
+
+func (m *Manager) expectMultilineAnswerMultiline(message string, answer *godog.DocString) error {
+	return m.expectMultilineAnswer(message, answer.Content)
+}
+
+func (m *Manager) expectMultilineInterrupt(message string) error {
+	m.survey().ExpectMultiline(message).Interrupt()
 
 	return nil
 }

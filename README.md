@@ -25,10 +25,10 @@ go get github.com/nhatthm/surveydog
 
 Type | Supported | Supported Actions
 :--- | :---: | :---
-`Confirm` | ✓ | <ul><li>Answer `yes`, `no` or a custom</li><li>Interrupt (`^C`)</li><li>Ask for help</li></ul>
+`Confirm` | ✓ | <ul><li>Answer `yes`, `no` or a custom one</li><li>Interrupt (`^C`)</li><li>Ask for help</li></ul>
 `Editor` | ✘ |
 `Input` | ✘ |
-`Multiline` | ✘ |
+`Multiline` | ✓ | <ul><li>Answer</li><li>No answer</li><li>Interrupt (`^C`)</li></ul>
 `Multiselect` | ✘ |
 `Password` | ✓ | <ul><li>Answer (+ check for `*`)</li><li>No answer</li><li>Interrupt (`^C`)</li><li>Ask for help</li></ul>
 `Select` | ✘ |
@@ -182,6 +182,67 @@ Example:
         And then I see another confirm prompt "Confirm? (y/N)", I answer yes
 
         Then ask for confirm "Confirm?" with help "This action cannot be undone", receive yes
+```
+
+### Multiline
+
+#### No Answer
+
+Expect to see a Multiline prompt and give no answer.
+
+Pattern: `(?:(?:get)|(?:see))s? a(?:nother)? multiline prompt "([^"]*)".* answers?: ""`
+
+Example:
+
+```gherkin
+    Scenario: Receive an empty answer
+        Given I see a multiline prompt "Enter comment", I answer ""
+
+        Then ask for multiline "Enter comment", receive:
+        """
+        """
+```
+
+#### Multiline Answer
+
+Expect to see a Multiline prompt and give an answer.
+
+Pattern: `(?:(?:get)|(?:see))s? a(?:nother)? multiline prompt "([^"]*)".* answers?:`
+
+Example:
+
+```gherkin
+    Scenario: Receive a multiline answer
+        Given I see a multiline prompt "Enter comment", I answer:
+        """
+        This is the first
+        line
+
+        this is the second line
+        """
+
+        Then ask for multiline "Enter comment", receive:
+        """
+        This is the first
+        line
+
+        this is the second line
+        """
+```
+
+#### Interrupt
+
+Expect to see a Multiline prompt and interrupt (^C).
+
+Pattern: `(?:(?:get)|(?:see))s? a(?:nother)? multiline prompt "([^"]*)".* interrupts?`
+
+Example:
+
+```gherkin
+    Scenario: Interrupted
+        Given I see a multiline prompt "Enter comment", I interrupt
+
+        Then ask for multiline "Enter comment", get interrupted
 ```
 
 ### Password

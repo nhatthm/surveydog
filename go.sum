@@ -181,6 +181,8 @@ github.com/nhatthm/surveyexpect v0.5.3 h1:jF1/6LiHZjHVyWE2mNDd2hqZ8o2nceamTrKAxN
 github.com/nhatthm/surveyexpect v0.5.3/go.mod h1:n9RGAQD7hRo74RWNHML46ce3C1o/9Q7xkB/FYWGfR1Q=
 github.com/nhatthm/surveyexpect v0.5.6 h1:ZYzhgxgJkCPRJ8jT69QdgMGLGJRN+Kg1js7w7e5Bdsc=
 github.com/nhatthm/surveyexpect v0.5.6/go.mod h1:7mGBTHgT6xFkRWnKVRK/+rakplLA5oIfK0Su2XmheXg=
+github.com/nhatthm/surveyexpect v0.5.7 h1:7qSpAeCCBJxeohd9CeHFTBMfovgPpRx/feLye2rSTnU=
+github.com/nhatthm/surveyexpect v0.5.7/go.mod h1:7mGBTHgT6xFkRWnKVRK/+rakplLA5oIfK0Su2XmheXg=
 github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e/go.mod h1:zD1mROLANZcx1PVRCS0qkT7pwLkGfwJo4zjcN/Tysno=
 github.com/oklog/ulid v1.3.1/go.mod h1:CirwcVhetQ6Lv90oh/F+FBtV6XMibvdAFo93nm5qn4U=
 github.com/pascaldekloe/goe v0.0.0-20180627143212-57f6aae5913c/go.mod h1:lzWF7FIEvWOWxwDKqyGYQf6ZUaNfKdP144TG7ZOy1lc=
