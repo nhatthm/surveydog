@@ -175,8 +175,12 @@ github.com/modern-go/reflect2 v1.0.1/go.mod h1:bx2lNnkwVCuqBIxFjflWJWanXIb3Rllmb
 github.com/mwitkow/go-conntrack v0.0.0-20161129095857-cc309e4a2223/go.mod h1:qRWi+5nqEBWmkhHvq77mSJWrCKwh8bxhgT7d/eI7P4U=
 github.com/nhatthm/consoledog v0.1.5 h1:7aXwbr7Ni/IJ9FNeugJxXswbU15Ouw3KQJ23xeInaSs=
 github.com/nhatthm/consoledog v0.1.5/go.mod h1:iH2ApBj2X0goodl+j17oU666tFrZFK+euBHUln5Y2Bw=
+github.com/nhatthm/consoledog v0.1.6 h1:jSLZkmq4L4of7UIDHWu5O2N/4aMb10qeWozSAVpZeeE=
+github.com/nhatthm/consoledog v0.1.6/go.mod h1:iH2ApBj2X0goodl+j17oU666tFrZFK+euBHUln5Y2Bw=
 github.com/nhatthm/surveyexpect v0.5.3 h1:jF1/6LiHZjHVyWE2mNDd2hqZ8o2nceamTrKAxNAtWMk=
 github.com/nhatthm/surveyexpect v0.5.3/go.mod h1:n9RGAQD7hRo74RWNHML46ce3C1o/9Q7xkB/FYWGfR1Q=
+github.com/nhatthm/surveyexpect v0.5.6 h1:ZYzhgxgJkCPRJ8jT69QdgMGLGJRN+Kg1js7w7e5Bdsc=
+github.com/nhatthm/surveyexpect v0.5.6/go.mod h1:7mGBTHgT6xFkRWnKVRK/+rakplLA5oIfK0Su2XmheXg=
 github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e/go.mod h1:zD1mROLANZcx1PVRCS0qkT7pwLkGfwJo4zjcN/Tysno=
 github.com/oklog/ulid v1.3.1/go.mod h1:CirwcVhetQ6Lv90oh/F+FBtV6XMibvdAFo93nm5qn4U=
 github.com/pascaldekloe/goe v0.0.0-20180627143212-57f6aae5913c/go.mod h1:lzWF7FIEvWOWxwDKqyGYQf6ZUaNfKdP144TG7ZOy1lc=
@@ -314,6 +318,9 @@ golang.org/x/sys v0.0.0-20200930185726-fdedc70b468f/go.mod h1:h1NjWce9XRLGQEsW7w
 golang.org/x/sys v0.0.0-20201119102817-f84b799fce68/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
 golang.org/x/sys v0.0.0-20210421221651-33663a62ff08 h1:qyN5bV+96OX8pL78eXDuz6YlDPzCYgdW74H5yE9BoSU=
 golang.org/x/sys v0.0.0-20210421221651-33663a62ff08/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
+golang.org/x/sys v0.0.0-20210423082822-04245dca01da/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
+golang.org/x/sys v0.0.0-20210423185535-09eb48e85fd7 h1:iGu644GcxtEcrInvDsQRCwJjtCIOlT2V7IRt6ah2Whw=
+golang.org/x/sys v0.0.0-20210423185535-09eb48e85fd7/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
 golang.org/x/term v0.0.0-20201126162022-7de9c90e9dd1/go.mod h1:bj7SfCRtBDWHUb9snDiAeCFNEtKQo2Wmx5Cou7ajbmo=
 golang.org/x/term v0.0.0-20210422114643-f5beecf764ed h1:Ei4bQjjpYUsS4efOUz+5Nz++IVkHk87n2zBA0NxBWc0=
 golang.org/x/term v0.0.0-20210422114643-f5beecf764ed/go.mod h1:bj7SfCRtBDWHUb9snDiAeCFNEtKQo2Wmx5Cou7ajbmo=
