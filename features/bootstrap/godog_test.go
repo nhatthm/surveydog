@@ -34,7 +34,7 @@ var (
 //nolint:gochecknoinits
 func init() {
 	flag.BoolVar(&runGoDogTests, "godog", false, "Set this flag is you want to run godog BDD tests")
-	godog.BindFlags("godog.", flag.CommandLine, &opt) // nolint: staticcheck
+	godog.BindCommandLineFlags("", &opt)
 }
 
 func TestIntegration(t *testing.T) {

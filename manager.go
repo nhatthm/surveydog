@@ -1,6 +1,7 @@
 package surveydog
 
 import (
+	"context"
 	"fmt"
 	"sync"
 	"time"
@@ -39,12 +40,16 @@ func (m *Manager) registerConsole(ctx *godog.ScenarioContext) {
 	m.attach(console)
 
 	// Manage state.
-	ctx.BeforeScenario(func(sc *godog.Scenario) {
+	ctx.Before(func(_ context.Context, sc *godog.Scenario) (context.Context, error) {
 		console.NewConsole(sc)
+
+		return nil, nil
 	})
 
-	ctx.AfterScenario(func(sc *godog.Scenario, _ error) {
+	ctx.After(func(ctx context.Context, sc *godog.Scenario, err error) (context.Context, error) {
 		console.CloseConsole(sc)
+
+		return nil, nil
 	})
 }
 
