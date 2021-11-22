@@ -6,7 +6,7 @@ require (
 	github.com/AlecAivazis/survey/v2 v2.3.2
 	github.com/Netflix/go-expect v0.0.0-20210722184520-ef0bf57d82b3
 	github.com/cucumber/godog v0.12.2
-	github.com/nhatthm/consoledog v0.1.7
+	github.com/nhatthm/consoledog v0.2.0
 	github.com/nhatthm/surveyexpect v0.6.0
 	github.com/stretchr/testify v1.7.0
 )
