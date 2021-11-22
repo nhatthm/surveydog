@@ -3,7 +3,7 @@ module github.com/nhatthm/surveydog
 go 1.17
 
 require (
-	github.com/AlecAivazis/survey/v2 v2.3.1
+	github.com/AlecAivazis/survey/v2 v2.3.2
 	github.com/Netflix/go-expect v0.0.0-20210722184520-ef0bf57d82b3
 	github.com/cucumber/godog v0.12.2
 	github.com/nhatthm/consoledog v0.1.7
