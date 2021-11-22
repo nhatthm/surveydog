@@ -6,13 +6,13 @@ require (
 	github.com/AlecAivazis/survey/v2 v2.3.2
 	github.com/Netflix/go-expect v0.0.0-20210722184520-ef0bf57d82b3
 	github.com/cucumber/godog v0.12.2
-	github.com/nhatthm/consoledog v0.2.0
+	github.com/nhatthm/consoledog v0.2.1
 	github.com/nhatthm/surveyexpect v0.6.0
 	github.com/stretchr/testify v1.7.0
 )
 
 require (
-	github.com/creack/pty v1.1.15 // indirect
+	github.com/creack/pty v1.1.17 // indirect
 	github.com/cucumber/gherkin-go/v19 v19.0.3 // indirect
 	github.com/cucumber/messages-go/v16 v16.0.1 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
