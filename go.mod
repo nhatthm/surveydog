@@ -3,8 +3,8 @@ module github.com/nhatthm/surveydog
 go 1.17
 
 require (
-	github.com/AlecAivazis/survey/v2 v2.3.2
-	github.com/Netflix/go-expect v0.0.0-20211003183012-e1a7c020ce25
+	github.com/AlecAivazis/survey/v2 v2.3.3
+	github.com/Netflix/go-expect v0.0.0-20220104043353-73e0943537d2
 	github.com/cucumber/godog v0.12.4
 	github.com/nhatthm/consoledog v0.2.1
 	github.com/nhatthm/surveyexpect v0.6.1
@@ -20,9 +20,8 @@ require (
 	github.com/hashicorp/go-immutable-radix v1.3.1 // indirect
 	github.com/hashicorp/go-memdb v1.3.2 // indirect
 	github.com/hashicorp/golang-lru v0.5.4 // indirect
-	github.com/hinshun/vt10x v0.0.0-20180809195222-d55458df857c // indirect
+	github.com/hinshun/vt10x v0.0.0-20220119200601-820417d04eec // indirect
 	github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51 // indirect
-	github.com/kr/pty v1.1.8 // indirect
 	github.com/mattn/go-colorable v0.1.11 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
 	github.com/mgutz/ansi v0.0.0-20200706080929-d51e80ef957d // indirect
