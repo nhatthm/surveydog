@@ -5,7 +5,7 @@ go 1.17
 require (
 	github.com/AlecAivazis/survey/v2 v2.3.4
 	github.com/Netflix/go-expect v0.0.0-20220104043353-73e0943537d2
-	github.com/cucumber/godog v0.12.4
+	github.com/cucumber/godog v0.12.5
 	github.com/nhatthm/consoledog v0.3.0
 	github.com/nhatthm/surveyexpect v0.7.0
 	github.com/stretchr/testify v1.7.1
