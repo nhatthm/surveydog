@@ -3,7 +3,7 @@ module github.com/nhatthm/surveydog
 go 1.17
 
 require (
-	github.com/AlecAivazis/survey/v2 v2.3.4
+	github.com/AlecAivazis/survey/v2 v2.3.5
 	github.com/Netflix/go-expect v0.0.0-20220104043353-73e0943537d2
 	github.com/cucumber/godog v0.12.5
 	github.com/nhatthm/consoledog v0.3.0
@@ -27,7 +27,7 @@ require (
 	github.com/mgutz/ansi v0.0.0-20200706080929-d51e80ef957d // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	golang.org/x/sys v0.0.0-20220319134239-a9b59b0215f8 // indirect
+	golang.org/x/sys v0.0.0-20220422013727-9388b58f7150 // indirect
 	golang.org/x/term v0.0.0-20210927222741-03fcf44c2211 // indirect
 	golang.org/x/text v0.3.7 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
