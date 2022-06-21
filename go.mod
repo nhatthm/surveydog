@@ -8,7 +8,7 @@ require (
 	github.com/cucumber/godog v0.12.5
 	github.com/nhatthm/consoledog v0.3.0
 	github.com/nhatthm/surveyexpect v0.7.0
-	github.com/stretchr/testify v1.7.2
+	github.com/stretchr/testify v1.7.4
 )
 
 require (
