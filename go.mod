@@ -1,3 +1,4 @@
+// Deprecated: Use go.nhat.io/surveysteps instead.
 module github.com/nhatthm/surveydog
 
 go 1.17
