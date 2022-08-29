@@ -1,4 +1,4 @@
-> ⚠️ This module is deprecated. Please use [go.nhat.io](https://github.com/nhatthm/surveysteps) instead.
+> ⚠️ This module is deprecated. Please use [go.nhat.io/surveysteps](https://github.com/nhatthm/surveysteps) instead.
 
 # Cucumber Survey steps for Go
 
